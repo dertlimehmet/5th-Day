@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css" />
+
+    <style>
+        .custom-show {
+            display: block;
+        }
+
+        .custom-hide {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="row">
+
+
+        <div class="col-md-4 offset-md-4 my-5">
+
+
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ürün Kayıt</h5>
+
+                    <div id="result">
+                        <div id="divSucceess" class="alert alert-success custom-hide" role="alert">
+                            Ürün başarılı kaydedildi.
+                        </div>
+                        <div id="divFail" class="alert alert-danger custom-hide" role="alert">
+                            Bir hata meydana geldi.
+                        </div>
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="txtName" class="form-label">Ürün ismi :</label>
+                            <input type="text" class="form-control" id="txtName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="txtPrice" class="form-label">Ürün Fiyat :</label>
+                            <input type="text" class="form-control" id="txtPrice">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropColorMenu" class="form-label">Ürün Renk :</label>
+                            <select class="form-control" id="dropColorMenu">
+                                <option value="">Seçiniz</option>
+                                <option value="1">Kırmızı</option>
+                                <option value="2">Mavi</option>
+                                <option value="3">Yeşil</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="checkPublish">
+                            <label class="form-check-label" for="checkPublish">Yayınlansın mı?</label>
+                        </div>
+
+                        <div class="mb-3">
+                            <p>Yayınlanma süresini seçiniz</p>
+                            <div class="form-check">
+                                <input class="form-check-input" value="15" type="radio" name="radioPublishDay">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    15 gün
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input value="30" class="form-check-input" type="radio" name="radioPublishDay">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    30 gün
+                                </label>
+                            </div>
+                            <div aria-valuemax="45" class="form-check">
+                                <input value="45" class="form-check-input" type="radio" name="radioPublishDay">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    45 gün
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <button id="btnSaveOrUpdate" onclick="saveOrUpdate()" type="button"
+                            class="btn btn-primary">Kaydet</button>
+                        <!-- <button id="btnSave" type="button" class="btn btn-primary">Kaydet 2</button> -->
+                        <button type="reset" class="btn btn-warning">Temizle</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>İsim</th>
+                        <th>Fiyat</th>
+                        <th>Renk</th>
+                        <th>Yayında mı?</th>
+                        <th>Yayın süresi</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody id="tableBody">
+
+
+                </tbody>
+            </table>
+
+
+
+
+
+        </div>
+
+    </div>
+
+
+</body>
+<script>
+
+
+    // var btnSave = document.querySelector("#btnSave");
+    // var dropDownColorMenu = document.querySelector("#dropColorMenu");
+
+    // // 2. way
+    // dropDownColorMenu.addEventListener("change", function () {
+    //   let text = dropDownColorMenu.options[dropDownColorMenu.selectedIndex].text;
+    //   console.log(text);
+
+    // })
+
+    // btnSave.addEventListener("click", function () {
+    //   console.log("click 2")
+
+
+    // })
+    // 1. way
+    // function dropColorMenuChange() {
+    //   console.log(document.querySelector("#dropColorMenu").value);
+
+    //   let dropDownColorMenu = document.querySelector("#dropColorMenu");
+    //   let text = dropDownColorMenu.options[dropDownColorMenu.selectedIndex].text;
+    //   console.log(text);
+    // }
+
+
+
+    var productIncreaseId = 0; // productId identity field
+    var updateProductId = 0;
+    var productList = [];
+    const divSuccess = document.querySelector("#divSucceess")
+    const divFail = document.querySelector("#divFail")
+    const btnSaveOrUpdate = document.querySelector("#btnSaveOrUpdate");
+    let isSaveOrUpdateType = "saveType";
+    const arrayBtnAction = [
+        { key: "saveType", func: save },
+        { key: "updateType", func: update }
+    ]
+    function btnLoadToForm(id) {
+        updateProductId = id;
+        btnSaveOrUpdate.textContent = "Güncelle";
+        isSaveOrUpdateType = "updateType"
+        const productToUpdate = productList.find(x => x.id == id);
+
+
+
+        document.getElementById("txtName").value = productToUpdate.name;
+        document.getElementById("txtPrice").value = productToUpdate.price;
+        document.querySelector("#dropColorMenu").value = productToUpdate.color;
+        document.querySelector("#checkPublish").checked = productToUpdate.isPublish;
+        const radioButtonArray = document.querySelectorAll("input[name='radioPublishDay']")
+
+        radioButtonArray.forEach(x => {
+            if (x.value == productToUpdate.publishDay) x.checked = true;
+        })
+
+
+    }
+
+
+    function loadTable() {
+
+        const tableBody = document.querySelector("#tableBody")
+        tableBody.innerHTML = '';
+        productList.forEach(newProduct => {
+            let newRow = document.createElement("tr");
+            newRow.innerHTML = `
+      <td>${newProduct.name}</td>
+      <td>${newProduct.price}</td>
+      <td>${newProduct.color}</td>
+      <td>${newProduct.isPublish}</td>
+      <td>${newProduct.publishDay}</td>
+      <td><button id="btnUpdate" onclick="btnLoadToForm(${newProduct.id})" type="button" class="btn btn-success">güncelle</button></td>
+      `;
+
+
+
+
+
+            tableBody.appendChild(newRow);
+        })
+    }
+    function showSuccess() {
+        divSuccess.classList.remove("custom-hide");
+        divSuccess.classList.add("custom-show");
+    }
+    function showFail() {
+        divFail.classList.remove("custom-hide");
+        divFail.classList.add("custom-show")
+    }
+    function reset() {
+        document.querySelector("form").reset();
+        isSaveOrUpdateType = "saveType"
+        btnSaveOrUpdate.textContent = "Kaydet";
+        setTimeout(function () {
+            divSuccess.classList.remove("custom-show");
+            divFail.classList.remove("custom-show");
+            divSuccess.classList.add("custom-hide")
+            divFail.classList.add("custom-hide")
+
+        }, 2000)
+    }
+    function save() {
+        const name = document.getElementById("txtName").value;
+        const price = document.getElementById("txtPrice").value;
+        const color = document.querySelector("#dropColorMenu").value;
+        const isPublish = document.querySelector("#checkPublish").checked;
+        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
+
+        productIncreaseId++;
+        const newProduct = { id: productIncreaseId, name: name, price: price, color: color, isPublish: isPublish, publishDay: publishDay }
+
+        try {
+
+            console.log(newProduct)
+            showSuccess();
+            productList.push(newProduct);
+            loadTable();
+
+        } catch (error) {
+            showFail();
+
+        }
+        finally {
+            reset();
+        }
+    }
+
+
+    function update() {
+
+
+        const name = document.getElementById("txtName").value;
+        const price = document.getElementById("txtPrice").value;
+        const color = document.querySelector("#dropColorMenu").value;
+        const isPublish = document.querySelector("#checkPublish").checked;
+        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
+
+        let productToUpdateIndex = productList.findIndex(product => product.id == updateProductId);
+
+        productList[productToUpdateIndex].name = name;
+        productList[productToUpdateIndex].price = price;
+        productList[productToUpdateIndex].color = color;
+        productList[productToUpdateIndex].isPublish = isPublish;
+        productList[productToUpdateIndex].publishDay = publishDay;
+
+        try {
+            showSuccess();
+            loadTable();
+
+        } catch (error) {
+            showFail();
+
+        }
+        finally {
+            reset();
+        }
+    }
+    function saveOrUpdate() {
+        arrayBtnAction.find(x => x.key == isSaveOrUpdateType).func();
+    }
+
+
+
+
+
+
+
+// Errors
+
+// syntax error
+// runtime error //    design time  / run time
+// logical error
+</script>
+
+
+</html>
