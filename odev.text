@@ -1,0 +1,9 @@
+Ürün Form Delete method / silme işleminden önce uyarı mesajı çıkartılacak.
+Ürün Forum Güncelle butonuna basıldığında ilgili satır vurgulancak
+Alert mesajları düzenlenecek
+Toplam ürün adedi yazdırılacak.
+kaydetme veya güncelleme olduğunu kullanıcıya gösterilecek (css ile)
+Validations
+- ürün ismi en az 3 karakter en fazla 10 karakter olacak
+- ürün fiyat en az 100 en fazla 5000 olacak
+- renk ve yayınlanma süresi için zorunlu bir seçim olacak

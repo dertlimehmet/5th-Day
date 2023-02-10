@@ -13,6 +13,18 @@
         .custom-hide {
             display: none;
         }
+
+        #btnDelete {
+            color: wheat;
+            background-color: red;
+            border-radius: 5px;
+            border-color: rgb(86, 13, 13);
+            position: absolute;
+            top: 475px;
+            right: 22px;
+            padding: 6px 30px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif 16px;
+        }
     </style>
 </head>
 
@@ -35,6 +47,9 @@
                         </div>
                         <div id="divFail" class="alert alert-danger custom-hide" role="alert">
                             Bir hata meydana geldi.
+                        </div>
+                        <div id="divDelete" class="alert alert-warning custom-hide" role="alert">
+                            Silme işlemi başarılı.
                         </div>
                     </div>
                     <form>
@@ -88,6 +103,7 @@
                             class="btn btn-primary">Kaydet</button>
                         <!-- <button id="btnSave" type="button" class="btn btn-primary">Kaydet 2</button> -->
                         <button type="reset" class="btn btn-warning">Temizle</button>
+                        <button id="btnDelete" type="button" onclick="deleted()">Sil</button>
                     </form>
 
                 </div>
@@ -155,6 +171,7 @@
     var productList = [];
     const divSuccess = document.querySelector("#divSucceess")
     const divFail = document.querySelector("#divFail")
+    const divDelete = document.querySelector("#divDelete");
     const btnSaveOrUpdate = document.querySelector("#btnSaveOrUpdate");
     let isSaveOrUpdateType = "saveType";
     const arrayBtnAction = [
@@ -205,6 +222,10 @@
             tableBody.appendChild(newRow);
         })
     }
+    function showDelete() {
+        divDelete.classList.remove("custom-hide");
+        divDelete.classList.add("custom-show");
+    }
     function showSuccess() {
         divSuccess.classList.remove("custom-hide");
         divSuccess.classList.add("custom-show");
@@ -222,6 +243,8 @@
             divFail.classList.remove("custom-show");
             divSuccess.classList.add("custom-hide")
             divFail.classList.add("custom-hide")
+            divDelete.classList.remove("custom-show");
+            divDelete.classList.add("custom-hide");
 
         }, 2000)
     }
@@ -251,8 +274,47 @@
         }
     }
 
+    function deleted() {
+
+        const name = document.getElementById("txtName").value;
+        const price = document.getElementById("txtPrice").value;
+        const color = document.querySelector("#dropColorMenu").value;
+        const isPublish = document.querySelector("#checkPublish").checked;
+        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
+
+        let productDelete = productList.findIndex(x => x.id == updateProductId);
+
+        productIncreaseId--;
+
+        const deleteTable = document.querySelector("#tableBody");
+        deleteTable.innerHTML = '';
+        productList.forEach(newProduct => {
+            let deleteRow = document.createElement("tr");
+            deleteRow.innerHTML = `
+            <td>${newProduct.name}</td>
+            <td>${newProduct.price}</td>
+            <td>${newProduct.color}</td>
+            <td>${newProduct.isPublish}</td>
+            <td>${newProduct.publishDay}</td>
+            <td><button id="btnDelete" type="button" onclick="deleted()">Sil</button></td>
+            `
+            try {
+                productList.pop(newProduct);
+                showDelete();
+                loadTable();
+            } catch (error) {
+                showFail();
+            }
+            finally {
+                reset();
+            }
+        })
+
+    }
+
 
     function update() {
+
 
 
         const name = document.getElementById("txtName").value;
@@ -283,6 +345,7 @@
     }
     function saveOrUpdate() {
         arrayBtnAction.find(x => x.key == isSaveOrUpdateType).func();
+        alert("Kaydedildi!")
     }
 
 
