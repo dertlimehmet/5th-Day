@@ -3,31 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/bootstrap.css" />
-
+    <link rel="stylesheet" href="css/bootstrap.css">
     <style>
+        .card-body {
+            background-color: wheat;
+        }
+
         .custom-show {
             display: block;
         }
 
         .custom-hide {
             display: none;
-        }
-
-        #btnDelete {
-            color: wheat;
-            background-color: red;
-            border-radius: 5px;
-            border-color: rgb(86, 13, 13);
-            position: absolute;
-            top: 475px;
-            right: 22px;
-            padding: 6px 30px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif 16px;
-        }
-
-        .selected-cell {
-            background-color: red;
         }
 
         .inlineDiv {
@@ -39,18 +26,24 @@
 <body>
     <div class="row">
         <div>
-            <div class="col-md-3 offset-md-1 my-5 inlineDiv ">
+            <div class="col-md-4 offset-md-1 my-5 inlineDiv">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Ürün Kayıt</h5>
 
                         <div id="result">
                             <div id="divSucceess" class="alert alert-success custom-hide" role="alert">
-                                Ürün başarılı kaydedildi.
+                                Ürün başarıyla kaydedildi.
                             </div>
                             <div id="divFail" class="alert alert-danger custom-hide" role="alert">
                                 Bir hata meydana geldi.
                             </div>
+                            <div id="divDelete" class="alert alert-warning custom-hide" role="alert">
+                                Silme işlemi başarılı.
+                            </div>
+                            <div id="divDeleteNegative" class="alert alert-info custom-hide" role="alert">Silme işlemi
+                                iptal
+                                edildi</div>
                         </div>
                         <form>
                             <div class="mb-3">
@@ -59,7 +52,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="txtPrice" class="form-label">Ürün Fiyat :</label>
-                                <input type="text" class="form-control" id="txtPrice">
+                                <input min="100" max="5000" type="number" class="form-control" id="txtPrice">
                             </div>
                             <div class="mb-3">
                                 <label for="dropColorMenu" class="form-label">Ürün Renk :</label>
@@ -91,7 +84,7 @@
                                     </label>
                                 </div>
                                 <div aria-valuemax="45" class="form-check">
-                                    <input class="form-check-input" type="radio" name="radioPublishDay">
+                                    <input value="45" class="form-check-input" type="radio" name="radioPublishDay">
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         45 gün
                                     </label>
@@ -103,15 +96,14 @@
                                 class="btn btn-primary">Kaydet</button>
                             <!-- <button id="btnSave" type="button" class="btn btn-primary">Kaydet 2</button> -->
                             <button type="reset" class="btn btn-warning">Temizle</button>
+                            <button id="btnDelete" type="button" onclick="deleted()">Sil</button>
                         </form>
 
                     </div>
                 </div>
-
-
-
             </div>
-            <div class="col-md-6  offset-md-1 inlineDiv">
+
+            <div class="col-md-6 offset-md-1">
                 <table class="table">
                     <thead>
                         <tr>
@@ -120,23 +112,27 @@
                             <th>Renk</th>
                             <th>Yayında mı?</th>
                             <th>Yayın süresi</th>
-                            <th>Güncelle</th>
-                            <th>Sil</th>
+                            <th></th>
                         </tr>
 
                     </thead>
                     <tbody id="tableBody">
 
-
                     </tbody>
                 </table>
+
             </div>
+
+
+
+
 
         </div>
 
-
     </div>
+
 </body>
+
 <script>
 
 
@@ -296,6 +292,7 @@
             console.log(newProduct);
             productList.push(newProduct);
             alert("Kaydedildi");
+            showSuccess()
         }
         else {
             window.alert("Fiyat değeri 100-5000 arasında olmak zorundadır");
@@ -313,13 +310,13 @@
         const newProduct = { id: productIncreaseId, name: name, price: price, color: color, isPublish: isPublish, publishDay: publishDay }
 
         try {
-            //validationText()
+            validationText()
             //validationNumber();
-            console.log(newProduct);
-            productList.push(newProduct);
+            //console.log(newProduct);
+            //productList.push(newProduct);
             loadTable();
-            showSuccess();
-            alert("Kaydedildi!");
+            //showSuccess();
+            //alert("Kaydedildi!");
         }
         catch (error) {
             showFail();

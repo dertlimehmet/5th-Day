@@ -3,37 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/bootstrap.css" />
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <style>
-        .custom-show {
-            display: block;
+        .inlineDiv {
+            display: inline-flex;
         }
 
         .custom-hide {
             display: none;
         }
-
-        #btnDelete {
-            color: wheat;
-            background-color: red;
-            border-radius: 5px;
-            border-color: rgb(86, 13, 13);
-            position: absolute;
-            top: 475px;
-            right: 22px;
-            padding: 6px 30px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif 16px;
-        }
-
-        .selected-cell {
-            background-color: red;
-        }
-
-        .inlineDiv {
-            display: inline-flex;
-        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 
 <body>
@@ -46,7 +32,7 @@
 
                         <div id="result">
                             <div id="divSucceess" class="alert alert-success custom-hide" role="alert">
-                                Ürün başarılı kaydedildi.
+                                Ürün başarıyla kaydedildi.
                             </div>
                             <div id="divFail" class="alert alert-danger custom-hide" role="alert">
                                 Bir hata meydana geldi.
@@ -56,10 +42,12 @@
                             <div class="mb-3">
                                 <label for="txtName" class="form-label">Ürün ismi :</label>
                                 <input type="text" class="form-control" id="txtName">
+                                <label for="txtName" class="form-label" id="nameValidationMessage"></label>
                             </div>
                             <div class="mb-3">
                                 <label for="txtPrice" class="form-label">Ürün Fiyat :</label>
                                 <input type="text" class="form-control" id="txtPrice">
+                                <label for="txtPrice" class="form-label" id="priceValidationMessage"></label>
                             </div>
                             <div class="mb-3">
                                 <label for="dropColorMenu" class="form-label">Ürün Renk :</label>
@@ -69,6 +57,7 @@
                                     <option value="2">Mavi</option>
                                     <option value="3">Yeşil</option>
                                 </select>
+                                <label for="dropColorMenu" class="form-label" id="colorValidationMessage"></label>
                             </div>
 
                             <div class="mb-3 form-check">
@@ -91,11 +80,13 @@
                                     </label>
                                 </div>
                                 <div aria-valuemax="45" class="form-check">
-                                    <input class="form-check-input" type="radio" name="radioPublishDay">
+                                    <input class="form-check-input" value="45" type="radio" name="radioPublishDay">
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         45 gün
                                     </label>
                                 </div>
+                                <label for="dropColorMenu" class="form-label" id="dayValidationMessage"></label>
+
                             </div>
 
 
@@ -104,6 +95,8 @@
                             <!-- <button id="btnSave" type="button" class="btn btn-primary">Kaydet 2</button> -->
                             <button type="reset" class="btn btn-warning">Temizle</button>
                         </form>
+                        <span style="display: block;" class="mt-3">Toplam Ürün Adedi</span> <span
+                            id="totalCount"></span>
 
                     </div>
                 </div>
@@ -130,65 +123,39 @@
 
                     </tbody>
                 </table>
+
+
+
             </div>
 
         </div>
 
 
     </div>
+
+
 </body>
 <script>
 
-
-    // var btnSave = document.querySelector("#btnSave");
-    // var dropDownColorMenu = document.querySelector("#dropColorMenu");
-
-    // // 2. way
-    // dropDownColorMenu.addEventListener("change", function () {
-    //   let text = dropDownColorMenu.options[dropDownColorMenu.selectedIndex].text;
-    //   console.log(text);
-
-    // })
-
-    // btnSave.addEventListener("click", function () {
-    //   console.log("click 2")
-
-
-    // })
-    // 1. way
-    // function dropColorMenuChange() {
-    //   console.log(document.querySelector("#dropColorMenu").value);
-
-    //   let dropDownColorMenu = document.querySelector("#dropColorMenu");
-    //   let text = dropDownColorMenu.options[dropDownColorMenu.selectedIndex].text;
-    //   console.log(text);
-    // }
-
-
-
+    'use strict';
     var productIncreaseId = 0; // productId identity field
     var updateProductId = 0;
     var productList = [];
-
-    const divDeleteNegative = document.querySelector("#divDeleteNegative")
     const divSuccess = document.querySelector("#divSucceess")
     const divFail = document.querySelector("#divFail")
-    const divDelete = document.querySelector("#divDelete");
     const btnSaveOrUpdate = document.querySelector("#btnSaveOrUpdate");
-
     let isSaveOrUpdateType = "saveType";
     const arrayBtnAction = [
         { key: "saveType", func: save },
         { key: "updateType", func: update }
     ]
-
-
-
     function btnLoadToForm(id) {
         updateProductId = id;
         btnSaveOrUpdate.textContent = "Güncelle";
         isSaveOrUpdateType = "updateType"
         const productToUpdate = productList.find(x => x.id == id);
+
+        loadTable(productToUpdate);
 
 
 
@@ -205,37 +172,67 @@
 
     }
 
+
     function loadTable() {
 
         const tableBody = document.querySelector("#tableBody")
         tableBody.innerHTML = '';
+
+
         productList.forEach(newProduct => {
             let newRow = document.createElement("tr");
             newRow.innerHTML = `
-      <td>${newProduct.name}</td>
-      <td>${newProduct.price}</td>
-      <td>${newProduct.color}</td>
-      <td>${newProduct.isPublish}</td>
-      <td>${newProduct.publishDay}</td>
-      <td><button id="btnUpdate" onclick="btnLoadToForm(${newProduct.id})" type="button" class="btn btn-success">güncelle</button></td>
-      `;
-
+            <td>${newProduct.name}</td>
+            <td>${newProduct.price}</td>
+            <td>${newProduct.color}</td>
+            <td>${newProduct.isPublish ? '<i class="fa-regular fa-circle-check"></i>' : '❌'}</td>
+            <td>${newProduct.publishDay}</td>
+            <td><button id="btnUpdate" onclick="btnLoadToForm(${newProduct.id})" type="button" class="btn btn-success">güncelle</button></td>
+            <td><button id="btnUpdate" onclick="deleted(${newProduct.id})" type="button" class="btn btn-danger">sil</button></td>
+          `;
 
 
 
 
 
             tableBody.appendChild(newRow);
+
+            document.querySelector('#totalCount').innerHTML = productList.length;
         })
     }
 
-    function showDelete() {
-        divDelete.classList.remove("custom-hide");
-        divDelete.classList.add("custom-show");
-    }
-    function deleteNegative() {
-        divDeleteNegative.classList.remove("custom-hide");
-        divDeleteNegative.classList.add("custom-show");
+
+
+
+    function loadTable(product) {
+
+        console.log('running');
+        const tableBody = document.querySelector("#tableBody")
+        tableBody.innerHTML = '';
+
+
+        productList.forEach(newProduct => {
+            let newRow = document.createElement("tr");
+            product === newProduct ? newRow.style.color = 'bisque' : '';
+
+            newRow.innerHTML = `
+    <td>${newProduct.name}</td>
+    <td>${newProduct.price}</td>
+    <td>${newProduct.color}</td>
+    <td>${newProduct.isPublish ? '<i class="fa-solid fa-check-to-slot"></i>' : '<i class="fa-regular fa-circle-xmark"></i>'}</td>
+    <td>${newProduct.publishDay}</td>
+    <td><button id="btnUpdate" onclick="btnLoadToForm(${newProduct.id})" type="button" class="btn btn-success">Güncelle</button></td>
+    <td><button id="btnUpdate" onclick="deleted(${newProduct.id})" type="button" class="btn btn-danger">Sil</button></td>
+  `;
+
+
+
+
+
+            tableBody.appendChild(newRow);
+
+            document.querySelector('#totalCount').innerHTML = productList.length;
+        })
     }
     function showSuccess() {
         divSuccess.classList.remove("custom-hide");
@@ -254,129 +251,121 @@
             divFail.classList.remove("custom-show");
             divSuccess.classList.add("custom-hide")
             divFail.classList.add("custom-hide")
-            divDelete.classList.remove("custom-show");
-            divDelete.classList.add("custom-hide");
-            divDeleteNegative.classList.remove("custom-show");
-            divDeleteNegative.classList.add("custom-hide");
 
         }, 2000)
     }
 
-    function validationText() {
-        const name = document.getElementById("txtName").value;
-        const price = document.getElementById("txtPrice").value;
-        const color = document.querySelector("#dropColorMenu").value;
-        const isPublish = document.querySelector("#checkPublish").checked;
-        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
 
-        productIncreaseId++;
-        const newProduct = { id: productIncreaseId, name: name, price: price, color: color, isPublish: isPublish, publishDay: publishDay }
+    const isValid = (name, productPrice, color, publishDay) => {
 
-        if (name.length >= 3 && name.length <= 10) {
-            console.log(newProduct);
-            productList.push(newProduct);
-            alert("Kaydedildi");
+        let validationsMessageArray = [];
+        let nameValidError = { key: 'name', value: 'Ürün İsmi 3-10 Aralığında Olmalıdır' };
+        let priceValidError = { key: 'price', value: 'Ürün Fiyatı 100-5000 Aralığında Olmalıdır' };
+        let colorValidError = { key: 'color', value: 'Ürün Rengi Seçili Olmalıdır' };
+        let dayValidError = { key: 'day', value: 'Ürün Yayın Süresi Seçili Olmalıdır' };
+
+        const isValidName = () => {
+            const nameElement = document.querySelector('#nameValidationMessage');
+            nameElement.innerHTML = 'Ürün İsmi En Az 3 Karekter En Fazla 10 Karekter Olmalıdır';
+            nameElement.style.color = 'red';
+            setTimeout(function () {
+                nameElement.innerHTML = '';
+
+            }, 2500);
+            validationsMessageArray.push(nameValidError);
         }
-        else {
-            window.alert("Input değeri 3-10 arasında olmak zorundadır");
+
+        const isValidPrice = () => {
+            const priceElement = document.querySelector('#priceValidationMessage');
+            priceElement.innerHTML = priceValidError.value;
+            priceElement.style.color = 'red';
+            setTimeout(function () {
+                priceElement.innerHTML = '';
+            }, 2500);
+            validationsMessageArray.push(priceValidError);
+
+
         }
+        const isValidcolor = () => {
+            const colorElement = document.querySelector('#colorValidationMessage');
+            colorElement.innerHTML = colorValidError.value;
+            colorElement.style.color = 'red';
+            setTimeout(function () {
+                colorElement.innerHTML = '';
+            }, 2500);
+            validationsMessageArray.push(colorValidError);
+
+
+        }
+        const isValidDay = () => {
+            const dayElement = document.querySelector('#dayValidationMessage');
+            dayElement.innerHTML = dayValidError.value;
+            dayElement.style.color = 'red';
+            setTimeout(function () {
+                dayElement.innerHTML = '';
+            }, 2500);
+            validationsMessageArray.push(dayValidError);
+
+
+        }
+        name.length >= 3 && name.length <= 10 ? 'true' : isValidName();
+        productPrice >= 100 && productPrice <= 5000 ? 'true' : isValidPrice();
+        color != '' ? 'true' : isValidcolor();
+        publishDay != null ? 'true' : isValidDay();
+
+        const result = validationsMessageArray.length > 0 ? false : true;
+
+        return result;
+
+
     }
 
-    function validationNumber() {
-        const name = document.getElementById("txtName").value;
-        const price = document.querySelector("txtPrice").value;
-        const color = document.querySelector("#dropColorMenu").value;
-        const isPublish = document.querySelector("#checkPublish").checked;
-        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
-
-        productIncreaseId++;
-        const newProduct = { id: productIncreaseId, name: name, price: price, color: color, isPublish: isPublish, publishDay: publishDay }
-
-        if (price >= 100 && price <= 5000) {
-            console.log(newProduct);
-            productList.push(newProduct);
-            alert("Kaydedildi");
-        }
-        else {
-            window.alert("Fiyat değeri 100-5000 arasında olmak zorundadır");
-        }
-    }
 
     function save() {
+
         const name = document.getElementById("txtName").value;
         const price = document.getElementById("txtPrice").value;
         const color = document.querySelector("#dropColorMenu").value;
-        const isPublish = document.querySelector("#checkPublish").checked;
-        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
+        const isPublish = document.querySelector("#checkPublish")?.checked;
+        const publishDay = document.querySelector("input[name='radioPublishDay']:checked")?.value;
 
         productIncreaseId++;
         const newProduct = { id: productIncreaseId, name: name, price: price, color: color, isPublish: isPublish, publishDay: publishDay }
 
-        try {
-            //validationText()
-            //validationNumber();
-            console.log(newProduct);
-            productList.push(newProduct);
-            loadTable();
-            showSuccess();
-            alert("Kaydedildi!");
-        }
-        catch (error) {
-            showFail();
+        const isValidResult = isValid(name, price, color, publishDay);
 
-        }
-        finally {
-            reset();
-        }
-    }
 
-    function deleted() {
+        console.log(color);
+        if (isValidResult) {
 
-        const name = document.getElementById("txtName").value;
-        const price = document.getElementById("txtPrice").value;
-        const color = document.querySelector("#dropColorMenu").value;
-        const isPublish = document.querySelector("#checkPublish").checked;
-        const publishDay = document.querySelector("input[name='radioPublishDay']:checked").value;
 
-        let productDelete = productList.findIndex(x => x.id == updateProductId);
-
-        productIncreaseId--;
-
-        const deleteTable = document.querySelector("#tableBody");
-        deleteTable.innerHTML = '';
-        productList.forEach(newProduct => {
-            let deleteRow = document.createElement("tr");
-            deleteRow.innerHTML = `
-            <td>${newProduct.name}</td>
-            <td>${newProduct.price}</td>
-            <td>${newProduct.color}</td>
-            <td>${newProduct.isPublish}</td>
-            <td>${newProduct.publishDay}</td>
-            <td><button id="btnDelete" type="button" onclick="deleted()">Sil</button></td>
-            `
-            let deleteText = "Emin misiniz?"
-            if (confirm(deleteText) == true) {
-                showDelete();
-                productList.pop(newProduct);
-            }
-            else {
-                deleteNegative();
-                reset();
-            }
             try {
+
+                console.log(newProduct)
+                showSuccess();
+                productList.push(newProduct);
                 loadTable();
+
             } catch (error) {
                 showFail();
+
             }
             finally {
                 reset();
             }
-        })
+
+        }
+        else {
+
+            isValid(name, price, color, publishDay);
+
+        }
 
     }
 
 
     function update() {
+
 
         const name = document.getElementById("txtName").value;
         const price = document.getElementById("txtPrice").value;
@@ -386,41 +375,63 @@
 
         let productToUpdateIndex = productList.findIndex(product => product.id == updateProductId);
 
-        productList[productToUpdateIndex].name = name;
-        productList[productToUpdateIndex].price = price;
-        productList[productToUpdateIndex].color = color;
-        productList[productToUpdateIndex].isPublish = isPublish;
-        productList[productToUpdateIndex].publishDay = publishDay;
 
-        try {
-            showSuccess();
-            loadTable();
-            alert("Güncellendi");
 
-        } catch (error) {
-            showFail();
+
+        const isValidResult = isValid(name, price, color, publishDay);
+
+
+        if (isValidResult) {
+
+
+            productList[productToUpdateIndex].name = name;
+            productList[productToUpdateIndex].price = price;
+            productList[productToUpdateIndex].color = color;
+            productList[productToUpdateIndex].isPublish = isPublish;
+            productList[productToUpdateIndex].publishDay = publishDay;
+
+
+            try {
+                showSuccess();
+                loadTable();
+                //saveOrUpdate();
+
+            } catch (error) {
+                console.log(error);
+                showFail();
+
+            }
+            finally {
+                reset();
+            }
+
 
         }
-        finally {
-            reset();
+        else {
+
+            isValid(name, price, color, publishDay);
         }
+
+
+
+
+
     }
+
+
+
     function saveOrUpdate() {
         arrayBtnAction.find(x => x.key == isSaveOrUpdateType).func();
     }
 
+    function deleted(id) {
+        let productToUpdateIndex = productList.findIndex(product => product.id == id);
+        productList.splice(productToUpdateIndex, 1);
+        loadTable();
+    }
 
 
 
-
-
-
-// Errors
-
-// syntax error
-// runtime error //    design time  / run time
-// logical error
 </script>
-
 
 </html>
