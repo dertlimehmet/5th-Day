@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+</body>
+<script>
+    //1.way
+    var person = {
+        name: "ahmet",
+        surname: "yıldız",
+        age: 0,
+        set setAge(age){this.age=age},
+        get fullName2() {
+            return `${this.name} ${this.surname}`;
+        },
+        fullName: function () {
+            return `${this.name} ${this.surname}`;
+        }
+    } //object
+
+    var personAsJson = {
+        "name": "ahmet",
+        "surname": "yıldız",
+        "age": 23
+    }
+
+    var product = {
+        name: "kalem 1",
+        colors: {
+            color1: "red",
+            color2: "blue",
+            color3: "green"
+        },
+        stock: [{
+            abd: 40,
+            turkey: 200
+        }],
+        show: function () {
+            return `${this.name} - ${this.colors.color1}`
+        }
+    }
+
+
+
+    product.calculate = function () {
+        return this.stock[0].turkey + this.stock[0].abd;
+    }
+
+
+
+
+    person.setAge=39;
+    console.log(`setAge:${person.setAge}`);
+    person.fullName2="hasan";
+    console.log(person.fullName2);
+    console.log(person.fullName());
+
+
+    console.log(product.calculate());
+    console.log(product.show());
+
+
+    //2.way
+    // var person2 = new Object();
+    // person2.name = "ahmet";
+    // person2.surname = "yıldız";
+    // person2.age = 23;
+
+    console.log(Object.values(person));
+    console.log(person.name);
+    console.log(person["name"]);
+
+    //add prop
+    person.color = "red";
+
+    //remove prop
+    delete person.name;
+
+
+    for (let prop in person) {
+        console.log(person[prop]);
+    }
+
+
+
+
+
+</script>
+
+</html>
