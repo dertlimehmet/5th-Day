@@ -1,0 +1,36 @@
+OOP concepts
+- Abstraction
+- Encapsulation
+- Inheritance
+- Polymorphism
+
+
+SOLID - Design Pattern (OIC/ Has-A/IS-A)
+
+
+
+// data types
+- reference types (class, array, delegate, event, object, string, interface)
+- value/primitive types (bool, datetime, long, short, int, interface)
+
+
+// pure/impure function
+
+//pure function
+function(int a, int b){
+    return a+b;
+}
+
+//impure function       ----- Başka bir değişken tarafından etkilenebilir
+                        ----- Pure hale getirmek daha mantıklı
+                        ----- kdv'yi method içine çekmek lazım
+var kdv=18;
+function A(int a, intb){ //2,5 => 180 / 2,5
+    return (a+b)*kdv;
+}
+function B{
+    kdv=15;
+}
+A(2,5) => 180
+B()=>
+A(2,5) => ?
