@@ -23,5 +23,5 @@ var EmployeeService = /** @class */ (function () {
     };
     return EmployeeService;
 }());
-var employeeID = new EmployeeService(new EmployeeRepositoryWithDiff());
+var employeeID = new EmployeeService(new EmployeeRepository());
 employeeID.showMe(1);

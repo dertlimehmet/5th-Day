@@ -80,3 +80,5 @@ moneyArray.push({moneyType:MoneyType.High,calculateMoney:new HighZam()});
 moneyArray.push({moneyType:MoneyType.Mid,calculateMoney:new MidZam()});
 moneyArray.push({moneyType:MoneyType.Low,calculateMoney:new LowZam()});
 
+let currentMoneyCalculate=moneyArray.find(x=>x.moneyType==externalMoneyType);
+console.log(currentMoneyCalculate?.calculateMoney.money(moneyFirst));
