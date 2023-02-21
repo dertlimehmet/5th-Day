@@ -8,6 +8,11 @@ import { InlineComponent } from './components/inline-component/inline.component'
 import { NormalComponent } from './components/normal/normal.component';
 import { StructuralDirectiveComponent } from './components/structural-directive/structural-directive.component';
 import { ExampleComponent } from './components/example/example.component';
+import { CustomDirective } from './directives/custom.directive';
+import { ExamplePipeComponent } from './pipes/example-pipe/example-pipe.component';
+import { CustomUpperCasePipe } from './pipes/custom-upper-case.pipe';
+import { CustomerModule } from './customer/customer.module';
+import { OrderModule } from './order/order.module';
 
 @NgModule({
   declarations: [
@@ -15,11 +20,16 @@ import { ExampleComponent } from './components/example/example.component';
     InlineComponent,
     NormalComponent,
     StructuralDirectiveComponent,
-    ExampleComponent
+    ExampleComponent,
+    CustomDirective,
+    ExamplePipeComponent,
+    CustomUpperCasePipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CustomerModule,
+    OrderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
