@@ -1,0 +1,7 @@
+<p>-----parent works------</p>
+
+
+<hr>
+
+<app-child [selectedId]="this.selectedCar?.id" (detailShowClick)="showDetail($event)" [carList]="carList"></app-child>
+<app-child-detail (closeEventClick)="close()" *ngIf="toggleCarDetail" [selectedCar]="selectedCar"></app-child-detail>

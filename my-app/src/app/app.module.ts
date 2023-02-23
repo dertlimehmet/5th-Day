@@ -3,25 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { InlineComponent } from './components/inline-component/inline.component';
-
-import { NormalComponent } from './components/normal/normal.component';
-import { StructuralDirectiveComponent } from './components/structural-directive/structural-directive.component';
-import { ExampleComponent } from './components/example/example.component';
+import { ParentComponent } from './input-output/parent/parent.component';
+import { ChildComponent } from './input-output/child/child.component';
+import { ChildDetailComponent } from './input-output/child-detail/child-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    InlineComponent,
-    NormalComponent,
-    StructuralDirectiveComponent,
-    ExampleComponent
+    ParentComponent,
+    ChildComponent,
+    ChildDetailComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

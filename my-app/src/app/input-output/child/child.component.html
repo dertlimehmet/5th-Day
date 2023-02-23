@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <table class="table table-secondary">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            [ngClass]="{ selected: highlight(car.id) }"
+            *ngFor="let car of carList"
+          >
+            <th>{{ car.id }}</th>
+            <td>{{ car.name }}</td>
+            <td>{{ car.price }}</td>
+            <td>{{ car.stock }}</td>
+            <td><button class="btn btn-info" (click)="showDetail(car.id)">detay göster</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
