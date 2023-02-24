@@ -30,11 +30,62 @@ export class AppComponent {
   title = 'myapp';
 
   constructor(private fakeService: FakeserviceService) {
-    this.fakeService.getPost().subscribe((x) => {
+    //1.yol
+    // this.fakeService
+    //   .SavePost({ id: 1, title: 'title 1', body: 'body 1', userId: 2 })
+    //   .subscribe((x) => {
+    //     console.log(x);
+    //   });
+    //2.yol
+    // this.fakeService
+    //   .SavePost({ id: 1, title: 'title 1', body: 'body 1', userId: 2 })
+    //   .subscribe({
+    //     next: (data) => console.log(data),
+    //     error: (err) => console.log(err),
+    //     complete: () => console.log('tamamlandı'),
+
+    //   });
+    // this.fakeService
+    // .SavePostWithError({ id: 1, title: 'title 1', body: 'body 1', userId: 2 })
+    // .subscribe({
+    //   next: (data) => console.log(data),
+    //   error: (err) => console.log(err.message),
+    //   complete: () => console.log('tamamlandı'),
+    // });
+
+    // this.fakeService
+    //   .UpdatePut({ id: 1, title: 'title 1', body: 'body 1', userId: 2 })
+    //   .subscribe({
+    //     next: (data) => console.log(data),
+    //     error: (err) => console.log(err.message),
+    //     complete: () => console.log('tamamlandı'),
+    //   });
+
+    // this.fakeService.deletePost(1).subscribe(x=>{
+    //   console.log(x)
+    // })
+
+    // this.fakeService.getParallelRequest().postObservable.subscribe(x=>console.log(x));
+    // this.fakeService.getParallelRequest().userObservable.subscribe(x=>console.log(x));
+
+    // this.fakeService
+    //   .getParallelWithForkJoinOperator()
+    //   .subscribe((x) => console.log(x));
+    //x.get       -----data
+    //x.post      -----data
+
+    // this.fakeService.getPostWithUserId(1).subscribe(x=>{
+    //   console.log(x)
+    // })
+
+    this.fakeService.getTodosWithUserId(2).subscribe(x=>{
       console.log(x);
-      });
-    };
-  
+    })
+
+    // this.fakeService.getPostWithHeader().subscribe((x) => {
+    //   console.log(x);
+    // });
+  }
 
   // constructor() {
   //   //of
