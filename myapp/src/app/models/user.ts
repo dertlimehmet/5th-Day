@@ -1,6 +1,6 @@
-export interface Postupdate {
+export interface User {
+    userId:number;
     id:number;
     title:string;
     body:string;
-    userId:number;
 }

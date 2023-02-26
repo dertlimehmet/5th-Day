@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">UserId</th>
+            <th scope="col">Title</th>
+            <th scope="col">Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userList">
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.userId }}</td>
+            <td>{{ user.title }}</td>
+            <td>@{{ user.body }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
