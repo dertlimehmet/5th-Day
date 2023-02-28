@@ -1,11 +1,10 @@
-<!-- <app-template-driven></app-template-driven> -->
+<button (click)="change()">Title Değiştir</button>
 
 
-<!-- <app-two-way-binding></app-two-way-binding> -->
+<app-show-productname [productName]="title">
+  <h2>data 1</h2>
+  <h2>data 2</h2>
+</app-show-productname>
 
-
-<app-reactive-forms></app-reactive-forms>
-
-<!-- <app-login></app-login> -->
 
 <router-outlet></router-outlet>
