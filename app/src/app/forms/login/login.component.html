@@ -1,15 +1,18 @@
-<div class="container">
+<div class="container col-md-4 mt-3">
   <div class="row">
     <div class="col-md-6 offset-3">
       <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
         
           <div class="form-outline mb-4">
             <label class="form-label" for="form2Example1">Email</label>
-            <input formControlName="email" type="email" id="form2Example1" class="form-control" />
+            <input formControlName="email" type="email" id="form2Example1" class="form-control" ngModel [email]="true" />
             <div class="form-text text-danger">
                 <div *ngIf="isInvalid('email')">
                   <div *ngIf="isInvalidControl('email', 'required')">
                     Email giriniz
+                  </div>
+                  <div *ngIf="isInvalidControl('email', 'emailFormat')">
+                    Geçerli email giriniz
                   </div>
                 </div>
               </div>
@@ -21,6 +24,9 @@
                 <div *ngIf="isInvalid('password')">
                   <div *ngIf="isInvalidControl('password', 'required')">
                     Şifre giriniz
+                  </div>
+                  <div *ngIf="isInvalidControl('password', 'passwordFormat')">
+                    Geçerli şifre giriniz
                   </div>
                 </div>
               </div>

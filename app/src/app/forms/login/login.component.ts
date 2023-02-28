@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Login } from 'src/app/models/login';
 import { FormBuilder, Validators } from '@angular/forms';
+import { emailValidator } from '../../validations/email-validator';
+import { passwordValidator } from '../../validations/password-validator';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +13,8 @@ export class LoginComponent {
   newLogin: Login | undefined = undefined;
 
   public loginForm = this.formBuilder.group({
-    email: ['', Validators.required],
-    password: [0, Validators.required],
+    email: ['', [Validators.required,emailValidator()]],
+    password: [0, [Validators.required,passwordValidator()]],
   });
 
   constructor(private formBuilder: FormBuilder) {}
@@ -32,6 +34,8 @@ export class LoginComponent {
 
     if (!(control.invalid && (control.dirty || control.touched))) return false;
     if (control.errors?.['required']) return true;
+    if (control.errors?.['emailFormat']) return true;
+    if (control.errors?.['passwordFormat']) return true;
 
     return false;
   }
