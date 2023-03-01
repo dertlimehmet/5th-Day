@@ -12,6 +12,7 @@ import { UserCreateComponent } from './user-create/user-create.component';
   ],
   imports: [
     CommonModule
-  ]
+  ],
+  exports:[UserListComponent]
 })
 export class UserModule { }

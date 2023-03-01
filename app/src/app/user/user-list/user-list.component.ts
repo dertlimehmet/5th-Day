@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent {
+  name='c user list'
 
 }
