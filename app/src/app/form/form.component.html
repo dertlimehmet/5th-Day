@@ -1,0 +1,81 @@
+<p>form works!</p>
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <form [formGroup]="productForm" (ngSubmit)="save()">
+          <div>
+            <h3>Ürün kayıt</h3>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">İsim :</label>
+            <input formControlName="name" type="text" class="form-control" />
+            <div class="form-text text-danger">
+            </div>
+            <div *ngIf="false">
+              <h3>Product Name Properties</h3>
+              <ul>
+                <li>Value :{{ productForm.get("name")?.value | json }}</li>
+                <li>Valid :{{ productForm.get("name")?.valid }}</li>
+                <li>Invalid :{{ productForm.get("name")?.invalid }}</li>
+                <li>Errors :{{ productForm.get("name")?.errors | json }}</li>
+                <li>touched :{{ productForm.get("name")?.touched }}</li>
+                <li>untouched :{{ productForm.get("name")?.untouched }}</li>
+                <li>dirty :{{ productForm.get("name")?.dirty }}</li>
+                <li>pristine :{{ productForm.get("name")?.pristine }}</li>
+              </ul>
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Fiyat :</label>
+            <input formControlName="price" type="number" class="form-control" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Kategori :</label>
+            <select formControlName="category" class="form-select">
+              <option value="">Seçiniz</option>
+              <option
+                value="{{ category.id }}"
+                *ngFor="let category of categoryMenuList"
+              >
+                {{ category.text }}
+              </option>
+            </select>
+          </div>
+  
+          <div class="mb-3">
+            <label class="form-label">Yayın süresi :</label>
+            <div *ngFor="let publish of publishMenuList">
+              <div class="form-check">
+                <input
+                  formControlName="publish"
+                  class="form-check-input"
+                  type="radio"
+                  value="{{ publish.id }}"
+                />
+                <label class="form-check-label" for="flexRadioDefault1">
+                  {{ publish.text }}
+                </label>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mb-3 form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              formControlName="isPublish"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              >Yayınlansın mı?</label
+            >
+          </div>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
+        </form>
+      </div>
+    </div>
+  </div>
