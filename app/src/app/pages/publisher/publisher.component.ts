@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
-import { SubjectProviderService } from '../../subject/subject-provider.service';
+import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { SubjectProviderService } from '../subject-provider.service';
 
 @Component({
   selector: 'page-publisher',
   templateUrl: './publisher.component.html',
-  styleUrls: ['./publisher.component.css'],
+  styleUrls: ['./publisher.component.css']
 })
 export class PublisherComponent implements OnInit {
 
-  public myNameObservable=new Subject;
-
-  constructor(private subjectServiceProvider:SubjectProviderService){}
+  name=new FormControl('');
   ngOnInit(): void {
   }
-  change(data: any) {
-    console.log(data);
-    this.subjectServiceProvider.mySelectMenuObservable.next(data);
-  }
+
+  public myNameObservable=new Subject;
+
+  constructor(private subjectProviderService:SubjectProviderService){}
+
+
 
   changeName(){
     console.log();
-    this.subjectServiceProvider.mySelectMenuObservable.next(this.name);
+    this.subjectProviderService.myObservableName.next(this.name);
   }
-  mySelectMenu: NgModel | undefined;
-  name:string|undefined;
+
+
 }
