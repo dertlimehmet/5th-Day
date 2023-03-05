@@ -10,6 +10,12 @@ import { GalleryComponent } from './pages/gallery/gallery.component';
 import { HeaderComponent } from './pages/header/header.component';
 import { FooterComponent } from './pages/footer/footer.component';
 import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
+import { AdminHomeComponent } from './pages/admin-home/admin-home.component';
+import { AdminPostComponent } from './pages/admin-post/admin-post.component';
+import { AdminUserComponent } from './pages/admin-user/admin-user.component';
+import { VisitorComponent } from './pages/visitor/visitor.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,11 +26,18 @@ import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.componen
     GalleryComponent,
     HeaderComponent,
     FooterComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    AdminHomeComponent,
+    AdminPostComponent,
+    AdminUserComponent,
+    VisitorComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
