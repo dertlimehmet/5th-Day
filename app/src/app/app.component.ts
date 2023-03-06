@@ -5,4 +5,11 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  name:string="ahmet";
+  surname:string="yıldız";
+
+  change(){
+    this.name="mehmet";
+    this.surname="dertli";
+  }
 }
