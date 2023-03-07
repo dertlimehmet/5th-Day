@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2>ToDos</h2>
+      <a routerLink="/todo-save" class="btn btn-dark">Save ToDo</a>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Completed</th>
+            <th>Id</th>
+            <th>Content</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            [ngClass]="{
+              'table-success': todo.isCompleted,
+              'table-secondary': !todo.isCompleted
+            }"
+            *ngFor="let todo of todoList"
+          >
+            <td>
+              <input
+                type="checkbox"
+                [checked]="todo.isCompleted"
+                (change)="isCompleted(todo.id)"
+              />
+            </td>
+            <td>{{ todo.id }}</td>
+            <td [ngClass]="{'isOk':todo.isCompleted}">{{ todo.content }}</td>
+            <td>{{ todo.created | date : "dd-MM-YYYY" }}</td>
+            <td>
+              <a class="btn btn-danger" (click)="delete(todo.id)">Delete</a>
+              <a
+                class="btn btn-success mx-2"
+                [routerLink]="['/todo-update', todo.id]"
+                >Update</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
