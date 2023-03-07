@@ -21,17 +21,41 @@
 
         <div class="mb-4">
           <label for="formExample2" class="form-label">Email</label>
-          <input type="email" id="formExample2" class="form-control" />
+          <input
+            ngModel
+            [email]="true"
+            formControlName="email"
+            type="email"
+            id="formExample2"
+            class="form-control"
+          />
+          <div class="form-text text-danger">
+            <div *ngIf="isInvalid('email')">
+              <div *ngIf="isInvalidControl('email', 'required')">
+                Email alanı boş olamaz!
+              </div>
+              <div *ngIf="isInvalidControl('email', 'emailFormat')">
+                Geçerli Email giriniz!
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="mb-4">
-            <label for="formExample4" class="form-label">Doğum Tarihi</label>
-            <input type="date" id="formExample4" class="form-control">
+          <label for="formExample4" class="form-label">Doğum Tarihi</label>
+          <input formControlName="birthDate" type="date" id="formExample4" class="form-control" />
+          <div class="form-text text-danger">
+            <div *ngIf="isInvalid('birthDate')">
+              <div *ngIf="isInvalidControl('birthDate', 'required')">
+                Doğum tarihinizi giriniz!
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="mb-3">
           İçerik Tipi
-          <select class="form-select" formControlName="content">
+          <select class="form-select" formControlName="contentType">
             <option value="">Seçiniz</option>
             <option
               value="{{ content.id }}"
@@ -40,11 +64,33 @@
               {{ content.text }}
             </option>
           </select>
+          <div class="form-text text-danger">
+            <div *ngIf="isInvalid('contentType')">
+              <div *ngIf="isInvalidControl('contentType', 'required')">
+                İçerik türünü seçiniz!
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="mb-4">
           <label for="formExample3" class="form-label">İçerik</label>
-          <input type="text" id="formExample3" class="form-control" />
+          <textarea
+            formControlName="content"
+            id="formExample3"
+            class="form-control"
+          ></textarea>
+          <!-- <input type="text" id="formExample3" class="form-control" /> -->
+          <div class="form-text text-danger">
+            <div *ngIf="isInvalid('content')">
+              <div *ngIf="isInvalidControl('content', 'required')">
+                İçerik kısmı boş olamaz!
+              </div>
+              <div *ngIf="isInvalidControl('content', 'minlength')">
+                En az 50 karakter girmek zorunludur!
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="mb-4">
@@ -63,8 +109,11 @@
             </div>
           </div>
         </div>
-
-        <button type="submit" class="btn btn-danger">Kaydet</button>
+        <div class="mb-4">
+          <button type="submit" class="btn btn-danger">Kaydet</button>
+        </div>
+        <br />
+        <br />
       </form>
     </div>
   </div>
