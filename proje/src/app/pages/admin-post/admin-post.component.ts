@@ -10,7 +10,6 @@ import { VisitorLogService } from '../../visitor-log.service';
 export class AdminPostComponent {
   @Input() postList: ReadonlyArray<Posts> = [];
   @Output() detailShowClick = new EventEmitter<number>();
-
   @Input() selectedId: number | undefined;
 
   constructor(private myService: VisitorLogService) {
