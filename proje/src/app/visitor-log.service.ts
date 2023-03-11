@@ -3,6 +3,7 @@ import { Visitor } from './visitor';
 import { HttpClient } from '@angular/common/http';
 import { Posts } from './posts';
 import { User } from './user';
+import { ICommentPost } from './icomment-post';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +19,8 @@ export class VisitorLogService {
       'https://jsonplaceholder.typicode.com/posts'
     );
   }
-  getComment() {
-    return this.httpClient.get<ReadonlyArray<Posts>>(
+  getComment(id:number) {
+    return this.httpClient.get<ReadonlyArray<ICommentPost>>(
       'https://jsonplaceholder.typicode.com/comments'
     );
   }
