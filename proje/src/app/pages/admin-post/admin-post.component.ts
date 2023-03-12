@@ -9,10 +9,10 @@ import { ICommentPost } from '../../icomment-post';
   styleUrls: ['./admin-post.component.css'],
 })
 export class AdminPostComponent {
-  @Input() postList: ReadonlyArray<Posts> = [];
-  @Input() commentList: ReadonlyArray<ICommentPost> = [];
+  @Input() postList: ReadonlyArray<Posts> | undefined;
+  @Input() commentList: ReadonlyArray<ICommentPost> | undefined;
   @Output() detailShowClick = new EventEmitter<number>();
-  @Input() selectedId: number | undefined;
+  selectedId: number | undefined;
 
   constructor(private myService: VisitorLogService) {
     this.myService.getPost().subscribe((x) => (this.postList = x));
